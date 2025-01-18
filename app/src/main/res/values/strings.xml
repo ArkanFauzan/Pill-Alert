@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Pill Alert</string>
+    <string-array name="time_options">
+        <item>Pagi</item>
+        <item>Siang</item>
+        <item>Malam</item>
+    </string-array>
+    <string-array name="condition_options">
+        <item>Sebelum makan</item>
+        <item>Sesudah makan</item>
+    </string-array>
+</resources>
