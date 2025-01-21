@@ -1,6 +1,6 @@
 package com.example.pillalert;
 
-public enum MedicineTrackingStatusEnum {
+public enum MedicineTrackingTypeEnum {
     OnTime(0, "On Time"),
     Late(1, "Late"),
     Faster(2, "Faster"),
@@ -9,7 +9,7 @@ public enum MedicineTrackingStatusEnum {
     private final int value;
     private final String englishTranslation;
 
-    MedicineTrackingStatusEnum(int value, String englishTranslation) {
+    MedicineTrackingTypeEnum(int value, String englishTranslation) {
         this.value = value;
         this.englishTranslation = englishTranslation;
     }
@@ -23,8 +23,8 @@ public enum MedicineTrackingStatusEnum {
     }
 
     // Method to get StatusEnum from integer
-    public static MedicineTrackingStatusEnum fromValue(int value) {
-        for (MedicineTrackingStatusEnum status : MedicineTrackingStatusEnum.values()) {
+    public static MedicineTrackingTypeEnum fromValue(int value) {
+        for (MedicineTrackingTypeEnum status : MedicineTrackingTypeEnum.values()) {
             if (status.value == value) {
                 return status;
             }

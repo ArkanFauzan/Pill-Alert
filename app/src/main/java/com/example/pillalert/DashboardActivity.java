@@ -45,9 +45,9 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long disease_id = DiseaseTable.add("Batuk", "deskripsi", "2025-01-21");
+                long disease_id = DiseaseTable.addDisease("Batuk", "deskripsi", "2025-01-21");
                 if(disease_id != -1) {
-                    long medicine_id = MedicineTable.add((int)disease_id, "Paracetamol", "ini obat pusing", MedicineUnitEnum.Tablet, 3, 1, 10,  "2025-01-21", "2025-01-23");
+                    long medicine_id = MedicineTable.addMedicine((int)disease_id, "Paracetamol", "ini obat pusing", MedicineUnitEnum.Tablet, 3, 1, 10,  "2025-01-21", "2025-01-23");
                     if(medicine_id != -1) {
                         Toast.makeText(DashboardActivity.this,"Data Inserted (disease & medicine)", Toast.LENGTH_LONG).show();
                     }

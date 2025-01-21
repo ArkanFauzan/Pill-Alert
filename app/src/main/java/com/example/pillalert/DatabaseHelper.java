@@ -20,11 +20,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Execute create query from all table
         db.execSQL(DatabaseHelperDiseaseTable.sqlCreateTable());
         db.execSQL(DatabaseHelperMedicineTable.sqlCreateTable());
+        db.execSQL(DatabaseHelperMedicineTrackingTable.sqlCreateTable());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop existing tables and recreate them
+        db.execSQL("DROP TABLE IF EXISTS medicine_tracking");
         db.execSQL("DROP TABLE IF EXISTS medicine");
         db.execSQL("DROP TABLE IF EXISTS disease");
         onCreate(db);

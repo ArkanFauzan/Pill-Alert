@@ -41,7 +41,7 @@ public class DatabaseHelperMedicineTable {
         ;
     }
 
-    public long add (int diseaseId, String name, String description, MedicineUnitEnum unit, int dosePerDay, int dosePerConsume, int amount, String startDate, String endDate) {
+    public long addMedicine(int diseaseId, String name, String description, MedicineUnitEnum unit, int dosePerDay, int dosePerConsume, int amount, String startDate, String endDate) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MEDICINE_DISEASE_ID, diseaseId);
@@ -56,12 +56,12 @@ public class DatabaseHelperMedicineTable {
         return db.insert(TABLE_MEDICINE, null, values);
     }
 
-    public Cursor getAll() {
+    public Cursor getAllMedicine() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_MEDICINE, null);
     }
 
-    public int update(int id, int diseaseId, String name, String description, int unit, int dosePerDay, int dosePerConsume, int amount, String startDate, String endDate) {
+    public int updateMedicine(int id, int diseaseId, String name, String description, int unit, int dosePerDay, int dosePerConsume, int amount, String startDate, String endDate) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MEDICINE_DISEASE_ID, diseaseId);
@@ -76,7 +76,7 @@ public class DatabaseHelperMedicineTable {
         return db.update(TABLE_MEDICINE, values, MEDICINE_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    public int delete(int id) {
+    public int deleteMedicine(int id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(TABLE_MEDICINE, MEDICINE_ID + " = ?", new String[]{String.valueOf(id)});
     }

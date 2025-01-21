@@ -28,7 +28,7 @@ public class DatabaseHelperDiseaseTable {
         ;
     }
 
-    public long add (String name, String description, String treatmentDate) {
+    public long addDisease (String name, String description, String treatmentDate) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DISEASE_NAME, name);
@@ -37,12 +37,12 @@ public class DatabaseHelperDiseaseTable {
         return db.insert(TABLE_DISEASE, null, values);
     }
 
-    public Cursor getAll() {
+    public Cursor getAllDisease() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_DISEASE, null);
     }
 
-    public int update(int id, String name, String description, String treatmentDate) {
+    public int updateDisease(int id, String name, String description, String treatmentDate) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DISEASE_NAME, name);
@@ -51,7 +51,7 @@ public class DatabaseHelperDiseaseTable {
         return db.update(TABLE_DISEASE, values, DISEASE_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    public int delete(int id) {
+    public int deleteDisease(int id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(TABLE_DISEASE, DISEASE_ID + " = ?", new String[]{String.valueOf(id)});
     }
