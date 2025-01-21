@@ -11,12 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    DatabaseHelperDiseaseTable DiseaseTable;
+    DatabaseHelperMedicineTable MedicineTable;
     private Button createScheduleButton, checkScheduleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        // Initialize database
+        DiseaseTable = new DatabaseHelperDiseaseTable(this);
+        MedicineTable = new DatabaseHelperMedicineTable(this);
 
         // Initialize Views
         createScheduleButton = findViewById(R.id.createScheduleButton);
@@ -38,9 +44,25 @@ public class DashboardActivity extends AppCompatActivity {
         checkScheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                long disease_id = DiseaseTable.add("Batuk", "deskripsi", "2025-01-21");
+                if(disease_id != -1) {
+                    long medicine_id = MedicineTable.add((int)disease_id, "Paracetamol", "ini obat pusing", MedicineUnitEnum.Tablet, 3, 1, 10,  "2025-01-21", "2025-01-23");
+                    if(medicine_id != -1) {
+                        Toast.makeText(DashboardActivity.this,"Data Inserted (disease & medicine)", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(DashboardActivity.this,"Medicine not inserted", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(DashboardActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
+                }
+
+
                 // Navigate to Check Schedule Activity
-                Intent intent = new Intent(DashboardActivity.this, CheckScheduleActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(DashboardActivity.this, CheckScheduleActivity.class);
+//                startActivity(intent);
             }
         });
 
