@@ -1,6 +1,8 @@
 package com.example.pillalert;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +41,32 @@ public class CardDiseaseAdapter extends RecyclerView.Adapter<CardDiseaseAdapter.
 
         holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
 
+        // Open detail page on CardView click
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DiseaseDetailActivity.class);
+            intent.putExtra("name", card.getName());
+            intent.putExtra("description", card.getDescription());
+            intent.putExtra("date", card.getDate());
+            context.startActivity(intent);
+        });
+
         holder.editIcon.setOnClickListener(v -> {
             // Handle edit click
         });
 
         holder.deleteIcon.setOnClickListener(v -> {
             // Handle delete click
+            new AlertDialog.Builder(context)
+                    .setTitle("Delete Confirmation")
+                    .setMessage("Are you sure you want to delete \""+card.getName()+"\"?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // Remove item from the list
+                        cardList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, cardList.size());
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         });
     }
 
