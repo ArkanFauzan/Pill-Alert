@@ -1,15 +1,20 @@
 package com.example.pillalert;
 
-public class CardDiseaseModel {
+public class DiseaseModel {
+    private int id;
     private String name;
     private String description;
-
     private String date;
 
-    public CardDiseaseModel(String name, String description, String date) {
+    public DiseaseModel(int id, String name, String description, String date) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

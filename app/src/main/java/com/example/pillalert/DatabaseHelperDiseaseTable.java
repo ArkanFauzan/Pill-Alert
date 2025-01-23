@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelperDiseaseTable {
     private DatabaseHelper dbHelper;
@@ -37,9 +41,17 @@ public class DatabaseHelperDiseaseTable {
         return db.insert(TABLE_DISEASE, null, values);
     }
 
-    public Cursor getAllDisease() {
+    public List<DiseaseModel> getAllDisease() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_DISEASE, null);
+        Cursor result = db.rawQuery("SELECT * FROM " + TABLE_DISEASE + " ORDER BY treatment_date DESC", null);
+        return mapDataToModel(result);
+    }
+
+    public DiseaseModel getDiseaseById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM " + TABLE_DISEASE + " WHERE  id = " + id, null);
+        List<DiseaseModel> disease = mapDataToModel(result);
+        return ((long) disease.size()) > 0 ? disease.get(0) : null;
     }
 
     public int updateDisease(int id, String name, String description, String treatmentDate) {
@@ -54,5 +66,26 @@ public class DatabaseHelperDiseaseTable {
     public int deleteDisease(int id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(TABLE_DISEASE, DISEASE_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    private List<DiseaseModel> mapDataToModel(Cursor data) {
+        List<DiseaseModel> result = new ArrayList<>();
+        try {
+            if (data != null && data.moveToFirst()) {
+                do {
+                    // Extract data from the cursor
+                    int id = data.getInt(data.getColumnIndexOrThrow("id"));
+                    String name = data.getString(data.getColumnIndexOrThrow("name"));
+                    String description = data.getString(data.getColumnIndexOrThrow("description"));
+                    String treatmentDate = data.getString(data.getColumnIndexOrThrow("treatment_date"));
+
+                    result.add(new DiseaseModel(id, name, description, treatmentDate));
+
+                } while (data.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseError", "Error fetching data: " + e.getMessage());
+        }
+        return result;
     }
 }

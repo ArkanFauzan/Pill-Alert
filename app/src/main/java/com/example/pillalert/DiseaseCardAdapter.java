@@ -13,12 +13,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class CardDiseaseAdapter extends RecyclerView.Adapter<CardDiseaseAdapter.CardViewHolder> {
+public class DiseaseCardAdapter extends RecyclerView.Adapter<DiseaseCardAdapter.CardViewHolder> {
 
     private Context context;
-    private List<CardDiseaseModel> cardList;
+    private DatabaseHelperDiseaseTable DiseaseTable;
+    private List<DiseaseModel> cardList;
 
-    public CardDiseaseAdapter(Context context, List<CardDiseaseModel> cardList) {
+    public DiseaseCardAdapter(Context context, List<DiseaseModel> cardList) {
         this.context = context;
         this.cardList = cardList;
     }
@@ -32,12 +33,16 @@ public class CardDiseaseAdapter extends RecyclerView.Adapter<CardDiseaseAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        CardDiseaseModel card = cardList.get(position);
+
+        // Initialize database
+        DiseaseTable = new DatabaseHelperDiseaseTable(context);
+
+        // Initialize card
+        DiseaseModel card = cardList.get(position);
 
         holder.nameText.setText(card.getName());
         holder.descriptionText.setText(card.getDescription());
         holder.dateText.setText(card.getDate());
-
 
         holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
 
@@ -52,6 +57,9 @@ public class CardDiseaseAdapter extends RecyclerView.Adapter<CardDiseaseAdapter.
 
         holder.editIcon.setOnClickListener(v -> {
             // Handle edit click
+            Intent intent = new Intent(context, DiseaseEditActivity.class);
+            intent.putExtra("id", card.getId()); // parsing id to edit activity
+            context.startActivity(intent);
         });
 
         holder.deleteIcon.setOnClickListener(v -> {
@@ -60,8 +68,9 @@ public class CardDiseaseAdapter extends RecyclerView.Adapter<CardDiseaseAdapter.
                     .setTitle("Delete Confirmation")
                     .setMessage("Are you sure you want to delete \""+card.getName()+"\"?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        // Remove item from the list
-                        cardList.remove(position);
+                        // Delete & Remove item from the list
+                        DiseaseTable.deleteDisease(card.getId()); // delete by id
+                        cardList.remove(position); // remove from list
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, cardList.size());
                     })
