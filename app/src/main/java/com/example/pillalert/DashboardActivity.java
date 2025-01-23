@@ -1,11 +1,12 @@
 package com.example.pillalert;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     DatabaseHelperDiseaseTable DiseaseTable;
     DatabaseHelperMedicineTable MedicineTable;
+    private RecyclerView recyclerView;
+    private CardDiseaseAdapter cardDiseaseAdapter;
+    private List<CardDiseaseModel> cardList;
     private Button createScheduleButton, checkScheduleButton;
 
     @Override
@@ -20,66 +24,65 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Initialize database
-        DiseaseTable = new DatabaseHelperDiseaseTable(this);
-        MedicineTable = new DatabaseHelperMedicineTable(this);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Views
-        createScheduleButton = findViewById(R.id.createScheduleButton);
-        checkScheduleButton = findViewById(R.id.checkScheduleButton);
-        ImageView menuIcon = findViewById(R.id.menuIcon);
-        ImageView profileIcon = findViewById(R.id.profileIcon);
+        // Sample data
+        cardList = new ArrayList<>();
+        cardList.add(new CardDiseaseModel("Radang tenggorokan 1", "Gejalanya batuk-batuk, sulit menelan, amandel terlihat membengkak", "2 Januari 2025"));
+        cardList.add(new CardDiseaseModel("Radang tenggorokan 2", "Gejalanya batuk-batuk, sulit menelan, amandel terlihat membengkak", "2 Januari 2025"));
+        cardList.add(new CardDiseaseModel("Radang tenggorokan 3", "Gejalanya batuk-batuk, sulit menelan, amandel terlihat membengkak", "2 Januari 2025"));
+        cardList.add(new CardDiseaseModel("Radang tenggorokan 4", "Gejalanya batuk-batuk, sulit menelan, amandel terlihat membengkak", "2 Januari 2025"));
+        cardList.add(new CardDiseaseModel("Radang tenggorokan 5", "Gejalanya batuk-batuk, sulit menelan, amandel terlihat membengkak", "2 Januari 2025"));
 
-        // Create Schedule Button Click Event
-        createScheduleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to Create Schedule Activity
-                Intent intent = new Intent(DashboardActivity.this, CreateScheduleActivity.class);
-                startActivity(intent);
-            }
-        });
+        cardDiseaseAdapter = new CardDiseaseAdapter(this, cardList);
+        recyclerView.setAdapter(cardDiseaseAdapter);
 
-        // Check Schedule Button Click Event
-        checkScheduleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                long disease_id = DiseaseTable.addDisease("Batuk", "deskripsi", "2025-01-21");
-                if(disease_id != -1) {
-                    long medicine_id = MedicineTable.addMedicine((int)disease_id, "Paracetamol", "ini obat pusing", MedicineUnitEnum.Tablet, 3, 1, 10,  "2025-01-21", "2025-01-23");
-                    if(medicine_id != -1) {
-                        Toast.makeText(DashboardActivity.this,"Data Inserted (disease & medicine)", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Toast.makeText(DashboardActivity.this,"Medicine not inserted", Toast.LENGTH_LONG).show();
-                    }
-                }
-                else {
-                    Toast.makeText(DashboardActivity.this,"Data not Inserted", Toast.LENGTH_LONG).show();
-                }
-
-
-                // Navigate to Check Schedule Activity
+//
+//        // Initialize database
+//        DiseaseTable = new DatabaseHelperDiseaseTable(this);
+//        MedicineTable = new DatabaseHelperMedicineTable(this);
+//
+//        // Initialize Views
+//        createScheduleButton = findViewById(R.id.createScheduleButton);
+//        checkScheduleButton = findViewById(R.id.checkScheduleButton);
+//        ImageView menuIcon = findViewById(R.id.menuIcon);
+//        ImageView profileIcon = findViewById(R.id.profileIcon);
+//
+//        // Create Schedule Button Click Event
+//        createScheduleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Navigate to Create Schedule Activity
+//                Intent intent = new Intent(DashboardActivity.this, CreateScheduleActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        // Check Schedule Button Click Event
+//        checkScheduleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Navigate to Check Schedule Activity
 //                Intent intent = new Intent(DashboardActivity.this, CheckScheduleActivity.class);
 //                startActivity(intent);
-            }
-        });
-
-        // Menu Icon Click Event
-        menuIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Menu clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Profile Icon Click Event
-        profileIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+//            }
+//        });
+//
+//        // Menu Icon Click Event
+//        menuIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(DashboardActivity.this, "Menu clicked", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // Profile Icon Click Event
+//        profileIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(DashboardActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }
