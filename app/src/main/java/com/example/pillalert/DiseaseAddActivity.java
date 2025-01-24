@@ -3,7 +3,6 @@ package com.example.pillalert;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,7 +14,7 @@ import java.util.Calendar;
 
 public class DiseaseAddActivity extends AppCompatActivity {
 
-    private DatabaseHelperDiseaseTable DiseaseTable;
+    private DatabaseHelperDiseaseTable diseaseTable;
     private EditText nameEditText, descriptionEditText;
     private EditText dateEditText;
     private Button saveButton, cancelButton;
@@ -26,13 +25,13 @@ public class DiseaseAddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_disease_add);
 
         // Initialize database
-        DiseaseTable = new DatabaseHelperDiseaseTable(this);
+        diseaseTable = new DatabaseHelperDiseaseTable(this);
 
         // Initialize views
         nameEditText = findViewById(R.id.editTextName);
         descriptionEditText = findViewById(R.id.editTextDescription);
         dateEditText = findViewById(R.id.editTextDate);
-        saveButton = findViewById(R.id.buttonSave);
+        saveButton = findViewById(R.id.buttonUpdate);
         cancelButton = findViewById(R.id.buttonCancel);
 
         // Set up DatePicker for the date field
@@ -49,7 +48,7 @@ public class DiseaseAddActivity extends AppCompatActivity {
                 return;
             }
 
-            long result = DiseaseTable.addDisease(name, description, date);
+            long result = diseaseTable.addDisease(name, description, date);
             if (result == -1) {
                 Toast.makeText(DiseaseAddActivity.this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show();
                 return;

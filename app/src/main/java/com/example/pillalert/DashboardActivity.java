@@ -7,14 +7,12 @@ import android.widget.Button;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private DatabaseHelperDiseaseTable DiseaseTable;
+    private DatabaseHelperDiseaseTable diseaseTable;
     private RecyclerView recyclerView;
     private DiseaseCardAdapter diseaseCardAdapter;
     private Button btnAddDisease;
@@ -25,13 +23,13 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         // Initialize database
-        DiseaseTable = new DatabaseHelperDiseaseTable(this);
+        diseaseTable = new DatabaseHelperDiseaseTable(this);
 
         // Show data in card format
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        diseaseCardAdapter = new DiseaseCardAdapter(this, DiseaseTable.getAllDisease());
+        diseaseCardAdapter = new DiseaseCardAdapter(this, diseaseTable.getAllDisease());
         recyclerView.setAdapter(diseaseCardAdapter);
 
         // Create Disease Button Click Event

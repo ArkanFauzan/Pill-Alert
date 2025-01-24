@@ -139,7 +139,7 @@
 
     <ScrollView
         android:layout_width="377dp"
-        android:layout_height="350dp"
+        android:layout_height="290dp"
         android:layout_marginBottom="16dp"
         android:scrollbarStyle="outsideInset">
 

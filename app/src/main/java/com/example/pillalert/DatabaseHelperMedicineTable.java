@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelperMedicineTable {
     private DatabaseHelper dbHelper;
@@ -56,9 +60,17 @@ public class DatabaseHelperMedicineTable {
         return db.insert(TABLE_MEDICINE, null, values);
     }
 
-    public Cursor getAllMedicine() {
+    public List<MedicineModel> getAllMedicine(int diseaseId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_MEDICINE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_MEDICINE  + " WHERE  disease_id = " + diseaseId, null);
+        return mapDataToModel(cursor);
+    }
+
+    public MedicineModel getMedicineById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM " + TABLE_MEDICINE + " WHERE  id = " + id, null);
+        List<MedicineModel> disease = mapDataToModel(result);
+        return ((long) disease.size()) > 0 ? disease.get(0) : null;
     }
 
     public int updateMedicine(int id, int diseaseId, String name, String description, int unit, int dosePerDay, int dosePerConsume, int amount, String startDate, String endDate) {
@@ -79,5 +91,32 @@ public class DatabaseHelperMedicineTable {
     public int deleteMedicine(int id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(TABLE_MEDICINE, MEDICINE_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    private List<MedicineModel> mapDataToModel(Cursor data) {
+        List<MedicineModel> result = new ArrayList<>();
+        try {
+            if (data != null && data.moveToFirst()) {
+                do {
+                    // Extract data from the cursor
+                    int id = data.getInt(data.getColumnIndexOrThrow("id"));
+                    int diseaseId = data.getInt(data.getColumnIndexOrThrow("disease_id"));
+                    String name = data.getString(data.getColumnIndexOrThrow("name"));
+                    String description = data.getString(data.getColumnIndexOrThrow("description"));
+                    MedicineUnitEnum unit = MedicineUnitEnum.fromValue(data.getInt(data.getColumnIndexOrThrow("unit")));
+                    int dosePerDay = data.getInt(data.getColumnIndexOrThrow("dose_perday"));
+                    int dosePerConsume = data.getInt(data.getColumnIndexOrThrow("dose_perconsume"));
+                    int amount = data.getInt(data.getColumnIndexOrThrow("medicine_amount"));
+                    String startDate = data.getString(data.getColumnIndexOrThrow("consume_start_date"));
+                    String endDate = data.getString(data.getColumnIndexOrThrow("consume_end_date"));
+
+                    result.add(new MedicineModel(id, diseaseId, name, description, unit, dosePerDay, dosePerConsume, amount, startDate, endDate));
+
+                } while (data.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseError", "Error fetching data: " + e.getMessage());
+        }
+        return result;
     }
 }

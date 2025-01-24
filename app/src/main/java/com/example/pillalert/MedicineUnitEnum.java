@@ -3,8 +3,10 @@ package com.example.pillalert;
 public enum MedicineUnitEnum {
     mL(0, "mL"),
     Tablet(1, "Tablet"),
-    Capsule(2, "capsule"),
-    Sachet(3, "sachet");
+    Capsule(2, "Capsule"),
+    Sachet(3, "Sachet"),
+    Spoon(4, "Sendok"),
+    TeaSpoon(5, "Sendok teh");
 
     private final int value;
     private final String englishTranslation;

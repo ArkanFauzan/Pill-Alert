@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,10 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiseaseDetailActivity extends AppCompatActivity {
+public class MedicineDetailActivity extends AppCompatActivity {
 
-    private DatabaseHelperDiseaseTable diseaseTable;
-    private DatabaseHelperMedicineTable medicineTable;
+    private DatabaseHelperMedicineTable MedicineTable;
     private TextView nameTextView, descriptionTextView, dateTextView;
     private RecyclerView recyclerView;
     private MedicineCardAdapter medicineCardAdapter;
@@ -29,33 +29,29 @@ public class DiseaseDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disease_detail);
 
-        // Initialize database
-        diseaseTable = new DatabaseHelperDiseaseTable(this);
-        medicineTable = new DatabaseHelperMedicineTable(this);
-
         // Initialize views
         nameTextView = findViewById(R.id.diseaseName);
         dateTextView = findViewById(R.id.diseaseDate);
         descriptionTextView = findViewById(R.id.diseaseDescription);
-        btnaddMedicine = findViewById(R.id.btnAddMedicine);
+        btnaddMedicine = findViewById(R.id.addButton);
         backButton = findViewById(R.id.backButton);
 
         // Get data from intent
-        int diseaseId = getIntent().getIntExtra("id", -1);
-
-        // Get disease data
-        DiseaseModel disease= diseaseTable.getDiseaseById(diseaseId);
-        String name = disease.getName();
-        String description = disease.getDescription();
-        String date = disease.getDate();
+        int id = getIntent().getIntExtra("id", -1);
+        String name = getIntent().getStringExtra("name");
+        String title = getIntent().getStringExtra("description");
+        String phone = getIntent().getStringExtra("date");
 
         // Set data to views
         nameTextView.setText(name);
-        dateTextView.setText(date);
-        descriptionTextView.setText(description);
+        dateTextView.setText(phone);
+        descriptionTextView.setText(title);
+
+        // Initialize database
+        MedicineTable = new DatabaseHelperMedicineTable(this);
 
         // Show data in card format
-        recyclerView = findViewById(R.id.recyclerViewMedicine);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // dummy data
@@ -66,7 +62,7 @@ public class DiseaseDetailActivity extends AppCompatActivity {
         data.add(new MedicineModel(4,1, "Paracetamol 4", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
         data.add(new MedicineModel(5,1, "Paracetamol 5", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
 
-        medicineCardAdapter = new MedicineCardAdapter(this, medicineTable.getAllMedicine(diseaseId));
+        medicineCardAdapter = new MedicineCardAdapter(this, data);
         recyclerView.setAdapter(medicineCardAdapter);
 
         // Create Medicine Button Click Event
@@ -74,8 +70,7 @@ public class DiseaseDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Create Medicine
-                Intent intent = new Intent(DiseaseDetailActivity.this, MedicineAddActivity.class);
-                intent.putExtra("diseaseId", diseaseId);
+                Intent intent = new Intent(MedicineDetailActivity.this, MedicineAddActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,9 +79,6 @@ public class DiseaseDetailActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to Dashboard
-                Intent intent = new Intent(DiseaseDetailActivity.this, DashboardActivity.class);
-                startActivity(intent);
                 finish(); // Optional, closes the current activity
             }
         });

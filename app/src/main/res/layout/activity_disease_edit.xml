@@ -72,11 +72,11 @@
         android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/buttonSave"
+        android:id="@+id/buttonUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#3B82F6"
-        android:text="Simpan"
+        android:text="Update"
         android:layout_marginBottom="8dp" />
 
     <Button
