@@ -61,6 +61,16 @@ public class MedicineModel {
         return startDate;
     }
 
+    public String getStartDateOnlyDate() {
+        String[] splited = startDate.split("\\s+");
+        return splited.length > 0 ? splited[0] : "";
+    }
+
+    public String getStartDateOnlyTime() {
+        String[] splited = startDate.split("\\s+");
+        return splited.length == 2 ? splited[1] : "";
+    }
+
     public String getEndDate() {
         return endDate;
     }

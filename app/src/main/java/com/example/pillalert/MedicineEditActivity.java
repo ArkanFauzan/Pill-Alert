@@ -2,6 +2,7 @@ package com.example.pillalert;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,7 @@ public class MedicineEditActivity extends AppCompatActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
     private TextView dosePerConsumeText, amountText;
-    private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, endDateEditText;
+    private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, startTimeEditText, endDateEditText;
     private Spinner unitSpinner;
     private Button updateButton, cancelButton;
     private int medicineId, diseaseId;
@@ -47,6 +48,7 @@ public class MedicineEditActivity extends AppCompatActivity {
         amountText = findViewById(R.id.textAmount);
         amountEditText = findViewById(R.id.editTextAmount);
         startDateEditText = findViewById(R.id.editTextStartDate);
+        startTimeEditText = findViewById(R.id.editTextStartTime);
         endDateEditText = findViewById(R.id.editTextEndDate);
         updateButton = findViewById(R.id.buttonUpdate);
         cancelButton = findViewById(R.id.buttonCancel);
@@ -87,6 +89,7 @@ public class MedicineEditActivity extends AppCompatActivity {
 
         // Set up DatePickers for date fields
         startDateEditText.setOnClickListener(v -> showDatePicker(startDateEditText));
+        startTimeEditText.setOnClickListener(v -> showTimePicker(startTimeEditText));
         endDateEditText.setOnClickListener(v -> showDatePicker(endDateEditText));
 
         // Handle update button click
@@ -98,9 +101,10 @@ public class MedicineEditActivity extends AppCompatActivity {
             String dosePerConsume = dosePerConsumeEditText.getText().toString().trim();
             String amount = amountEditText.getText().toString().trim();
             String startDate = startDateEditText.getText().toString().trim();
+            String startTime = startTimeEditText.getText().toString().trim();
             String endDate = endDateEditText.getText().toString().trim();
 
-            if (name.isEmpty() || description.isEmpty() || dosePerDay.isEmpty() || dosePerConsume.isEmpty() || amount.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
+            if (name.isEmpty() || description.isEmpty() || dosePerDay.isEmpty() || dosePerConsume.isEmpty() || amount.isEmpty() || startDate.isEmpty() || startTime.isEmpty() || endDate.isEmpty()) {
                 Toast.makeText(MedicineEditActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -117,7 +121,7 @@ public class MedicineEditActivity extends AppCompatActivity {
                         Integer.parseInt(dosePerDay),
                         Integer.parseInt(dosePerConsume),
                         Integer.parseInt(amount),
-                        startDate,
+                        startDate + " " + startTime,
                         endDate
                 );
 
@@ -148,7 +152,8 @@ public class MedicineEditActivity extends AppCompatActivity {
             dosePerDayEditText.setText(String.valueOf(medicine.getDosePerDay()));
             dosePerConsumeEditText.setText(String.valueOf(medicine.getDosePerConsume()));
             amountEditText.setText(String.valueOf(medicine.getAmount()));
-            startDateEditText.setText(medicine.getStartDate());
+            startDateEditText.setText(medicine.getStartDateOnlyDate());
+            startTimeEditText.setText(medicine.getStartDateOnlyTime());
             endDateEditText.setText(medicine.getEndDate());
             unitSpinner.setSelection(getUnitPosition(medicine.getUnit()));
         } else {
@@ -199,8 +204,25 @@ public class MedicineEditActivity extends AppCompatActivity {
 
                     String selectedDate = selectedYear + "-" + monthTwoDigit + "-" + dayTwoDigit;
                     targetEditText.setText(selectedDate);
+
+                    // Automatically show time picker after date selection
+                    if (targetEditText == startDateEditText) {
+                        showTimePicker(startTimeEditText);
+                    }
                 }, year, month, day);
 
         datePickerDialog.show();
+    }
+
+    private void showTimePicker(EditText targetTimeEditText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, selectedHour, selectedMinute) -> {
+            @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", selectedHour, selectedMinute);
+            targetTimeEditText.setText(time);
+        }, hour, minute, true);
+        timePickerDialog.show();
     }
 }
