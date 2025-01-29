@@ -158,21 +158,23 @@
                 android:focusable="false"
                 android:clickable="true"
                 android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/buttonUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#3B82F6"
+                android:text="Update"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#91959c"
+                android:text="Cancel" />
+
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/buttonUpdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#3B82F6"
-        android:text="Update"
-        android:layout_marginBottom="8dp" />
-
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#91959c"
-        android:text="Cancel" />
 </LinearLayout>
