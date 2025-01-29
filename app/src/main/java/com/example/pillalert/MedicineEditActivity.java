@@ -1,13 +1,17 @@
 package com.example.pillalert;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import java.util.List;
 public class MedicineEditActivity extends AppCompatActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
+    private TextView dosePerConsumeText, amountText;
     private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, endDateEditText;
     private Spinner unitSpinner;
     private Button updateButton, cancelButton;
@@ -37,7 +42,9 @@ public class MedicineEditActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.editTextDescription);
         unitSpinner = findViewById(R.id.spinnerUnit);
         dosePerDayEditText = findViewById(R.id.editTextDosePerDay);
+        dosePerConsumeText = findViewById(R.id.textDosePerConsume);
         dosePerConsumeEditText = findViewById(R.id.editTextDosePerConsume);
+        amountText = findViewById(R.id.textAmount);
         amountEditText = findViewById(R.id.editTextAmount);
         startDateEditText = findViewById(R.id.editTextStartDate);
         endDateEditText = findViewById(R.id.editTextEndDate);
@@ -57,6 +64,23 @@ public class MedicineEditActivity extends AppCompatActivity {
 
         // Populate the unit spinner
         populateUnitSpinner();
+
+        // Set onChange unitSpinner
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedUnit = parent.getItemAtPosition(position).toString();
+
+                dosePerConsumeText.setText("Dosis per Konsumsi (" + selectedUnit +")");
+                amountText.setText("Jumlah Obat yang Diberikan (" + selectedUnit +")");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
 
         // Populate fields with existing data
         loadMedicineData(medicineId);

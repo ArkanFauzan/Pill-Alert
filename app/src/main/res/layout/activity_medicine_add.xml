@@ -106,6 +106,7 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/textDosePerConsume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Dosis per Konsumsi"
@@ -119,9 +120,10 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/textAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Jumlah Obat"
+                android:text="Jumlah Obat yang Diberikan"
                 android:layout_marginBottom="4dp" />
             <EditText
                 android:id="@+id/editTextAmount"
