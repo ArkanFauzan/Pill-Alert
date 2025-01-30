@@ -24,6 +24,7 @@ public class DatabaseHelperMedicineTable {
     public static final String MEDICINE_AMOUNT = "medicine_amount";
     public static final String MEDICINE_CONSUME_START_DATE = "consume_start_date";
     public static final String MEDICINE_CONSUME_END_DATE = "consume_end_date";
+    public static final String MEDICINE_HAS_TRACKING_DATA = "has_tracking_data";
 
     public DatabaseHelperMedicineTable(Context context) {
         dbHelper = new DatabaseHelper(context);
@@ -41,7 +42,8 @@ public class DatabaseHelperMedicineTable {
                 "medicine_amount INTEGER, " +
                 "consume_start_date TEXT, " +
                 "consume_end_date TEXT, " +
-                "FOREIGN KEY(disease_id) REFERENCES disease(id))"
+                "has_tracking_data INTEGER DEFAULT 0, " +
+                "FOREIGN KEY(disease_id) REFERENCES disease(id) ON DELETE CASCADE)"
         ;
     }
 
@@ -57,6 +59,7 @@ public class DatabaseHelperMedicineTable {
         values.put(MEDICINE_AMOUNT, amount);
         values.put(MEDICINE_CONSUME_START_DATE, startDate);
         values.put(MEDICINE_CONSUME_END_DATE, endDate);
+        values.put(MEDICINE_HAS_TRACKING_DATA, Boolean.FALSE);
         return db.insert(TABLE_MEDICINE, null, values);
     }
 
@@ -85,6 +88,13 @@ public class DatabaseHelperMedicineTable {
         values.put(MEDICINE_AMOUNT, amount);
         values.put(MEDICINE_CONSUME_START_DATE, startDate);
         values.put(MEDICINE_CONSUME_END_DATE, endDate);
+        return db.update(TABLE_MEDICINE, values, MEDICINE_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public int updateMedicineHasTrackingData(int id, Boolean hasTrackingData) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MEDICINE_HAS_TRACKING_DATA, hasTrackingData);
         return db.update(TABLE_MEDICINE, values, MEDICINE_ID + " = ?", new String[]{String.valueOf(id)});
     }
 

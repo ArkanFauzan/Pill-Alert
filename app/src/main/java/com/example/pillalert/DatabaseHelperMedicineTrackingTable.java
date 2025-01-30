@@ -29,7 +29,7 @@ public class DatabaseHelperMedicineTrackingTable {
                 "consume_date TEXT, " +
                 "tracking_type INTEGER, " +
                 "notes TEXT, " +
-                "FOREIGN KEY(medicine_id) REFERENCES medicine(id))"
+                "FOREIGN KEY(medicine_id) REFERENCES medicine(id) ON DELETE CASCADE)"
         ;
     }
 
