@@ -1,10 +1,11 @@
 package com.example.pillalert;
 
 public enum MedicineTrackingTypeEnum {
-    OnTime(0, "On Time"),
-    Late(1, "Late"),
-    Faster(2, "Faster"),
-    NoDrink(3, "No Drink");
+    NotYet(0, "Belum waktunya"),
+    OnTime(1, "Tepat waktu"),
+    Late(2, "Telat minum"),
+    Faster(3, "Lebih cepat minum"),
+    Forgot(4, "Lupa minum");
 
     private final int value;
     private final String englishTranslation;

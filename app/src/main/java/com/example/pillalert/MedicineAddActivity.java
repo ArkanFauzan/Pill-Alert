@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,7 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,10 +29,19 @@ import java.util.List;
 public class MedicineAddActivity extends AppCompatActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
+    private DatabaseHelperMedicineTrackingTable medicineTrackingTable;
     private TextView dosePerConsumeText, amountText;
-    private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, startTimeEditText, endDateEditText;
+    private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, startTimeEditText;
     private Spinner unitSpinner;
     private Button saveButton, cancelButton;
+    // For calculating medicine tracking interval
+    private RecyclerView recyclerView;
+    private MedicineTrackingCardAdapter medicineTrackingCardAdapter;
+    private int medicineTrackingDataToGet = 0;
+    private int hourInterval = 0;
+    private String dateTimeStartConsume = "";
+    private String dateTimeEndConsume = "";
+    private List<String> resultConsumeIntervals = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +50,7 @@ public class MedicineAddActivity extends AppCompatActivity {
 
         // Initialize database
         medicineTable = new DatabaseHelperMedicineTable(this);
+        medicineTrackingTable = new DatabaseHelperMedicineTrackingTable(this);
 
         // Get data from intent
         int diseaseId = getIntent().getIntExtra("diseaseId", -1);
@@ -51,7 +66,6 @@ public class MedicineAddActivity extends AppCompatActivity {
         amountEditText = findViewById(R.id.editTextAmount);
         startDateEditText = findViewById(R.id.editTextStartDate);
         startTimeEditText = findViewById(R.id.editTextStartTime);
-        endDateEditText = findViewById(R.id.editTextEndDate);
         saveButton = findViewById(R.id.buttonUpdate);
         cancelButton = findViewById(R.id.buttonCancel);
 
@@ -78,7 +92,27 @@ public class MedicineAddActivity extends AppCompatActivity {
         // Set up DatePickers for date fields
         startDateEditText.setOnClickListener(v -> showDatePicker(startDateEditText));
         startTimeEditText.setOnClickListener(v -> showTimePicker(startTimeEditText));
-        endDateEditText.setOnClickListener(v -> showDatePicker(endDateEditText));
+
+        // Attach text change listener
+        TextWatcher doseWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateDoseInterval();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+        dosePerDayEditText.addTextChangedListener(doseWatcher);
+        dosePerConsumeEditText.addTextChangedListener(doseWatcher);
+        amountEditText.addTextChangedListener(doseWatcher);
+
+        // Show data in card format ( set list in generateMedicineTrackingInterval() )
+        recyclerView = findViewById(R.id.recyclerViewMedicineTracking);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Handle save button click
         saveButton.setOnClickListener(v -> {
@@ -88,11 +122,8 @@ public class MedicineAddActivity extends AppCompatActivity {
             String dosePerDay = dosePerDayEditText.getText().toString().trim();
             String dosePerConsume = dosePerConsumeEditText.getText().toString().trim();
             String amount = amountEditText.getText().toString().trim();
-            String startDate = startDateEditText.getText().toString().trim();
-            String startTime = startTimeEditText.getText().toString().trim();
-            String endDate = endDateEditText.getText().toString().trim();
 
-            if (name.isEmpty() || description.isEmpty() || dosePerDay.isEmpty() || dosePerConsume.isEmpty() || amount.isEmpty() || startDate.isEmpty()|| startTime.isEmpty() || endDate.isEmpty()) {
+            if (name.isEmpty() || description.isEmpty() || dosePerDay.isEmpty() || dosePerConsume.isEmpty() || amount.isEmpty() || dateTimeStartConsume.isEmpty() || dateTimeEndConsume.isEmpty() || resultConsumeIntervals.isEmpty()) {
                 Toast.makeText(MedicineAddActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -100,6 +131,7 @@ public class MedicineAddActivity extends AppCompatActivity {
             try {
                 MedicineUnitEnum unit = getSelectedUnit(unitString); // Convert string to MedicineUnitEnum
 
+                // Save medicine
                 long result = medicineTable.addMedicine(
                         diseaseId,
                         name,
@@ -108,13 +140,18 @@ public class MedicineAddActivity extends AppCompatActivity {
                         Integer.parseInt(dosePerDay),
                         Integer.parseInt(dosePerConsume),
                         Integer.parseInt(amount),
-                        startDate + " " + startTime,
-                        endDate
+                        dateTimeStartConsume,
+                        dateTimeEndConsume
                 );
 
                 if (result == -1) {
                     Toast.makeText(MedicineAddActivity.this, "Failed to save data", Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                // Save medicine tracking
+                for (int i = 0; i < resultConsumeIntervals.size(); i++) {
+                    medicineTrackingTable.addMedicineTracking((int) result, resultConsumeIntervals.get(i), "", MedicineTrackingTypeEnum.NotYet, "");
                 }
 
                 // Navigate to Disease Detail Activity
@@ -176,6 +213,8 @@ public class MedicineAddActivity extends AppCompatActivity {
                     // Automatically show time picker after date selection
                     if (targetEditText == startDateEditText) {
                         showTimePicker(startTimeEditText);
+
+                        generateMedicineTrackingInterval();
                     }
                 }, year, month, day);
 
@@ -192,9 +231,72 @@ public class MedicineAddActivity extends AppCompatActivity {
                 (view, selectedHour, selectedMinute) -> {
                     @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", selectedHour, selectedMinute);
                     targetTimeEditText.setText(time);
+
+                    generateMedicineTrackingInterval();
                 }, hour, minute, true); // 24-hour format
 
         timePickerDialog.show();
+    }
+
+    private void calculateDoseInterval() {
+        String dosePerDayStr = dosePerDayEditText.getText().toString();
+        String dosePerConsumeStr = dosePerConsumeEditText.getText().toString();
+        String amountStr = amountEditText.getText().toString();
+
+        medicineTrackingDataToGet = 0;
+        hourInterval = 0;
+
+        if (!dosePerDayStr.isEmpty() && !dosePerConsumeStr.isEmpty() && !amountStr.isEmpty()) {
+            int dosePerDay = Integer.parseInt(dosePerDayStr);
+            int dosePerConsume = Integer.parseInt(dosePerConsumeStr);
+            int amount = Integer.parseInt(amountStr);
+
+            if (dosePerDay > 0 && dosePerConsume > 0 && amount > 0) {
+                medicineTrackingDataToGet = (int) Math.floor((double) amount / dosePerConsume);
+                hourInterval = (int) Math.floor((double) 24 / dosePerDay);
+            }
+        }
+
+        generateMedicineTrackingInterval();
+    }
+
+    private void generateMedicineTrackingInterval() {
+
+        String startDate = startDateEditText.getText().toString().trim();
+        String startTime = startTimeEditText.getText().toString().trim();
+
+        if (
+            medicineTrackingDataToGet > 0 &&
+            hourInterval > 0 &&
+            !startDate.isEmpty() &&
+            !startTime.isEmpty()
+        ) {
+            try {
+                dateTimeStartConsume = startDate + " " + startTime;
+
+                DateTimeHelper dateTimeHelper = new DateTimeHelper(dateTimeStartConsume);
+                resultConsumeIntervals = dateTimeHelper.getIntervalDateTime(medicineTrackingDataToGet, hourInterval);
+
+                dateTimeEndConsume = resultConsumeIntervals.get(resultConsumeIntervals.size() - 1);
+
+                // show list
+                List<MedicineTrackingModel> data = new ArrayList<>();
+                for (int i = 0; i < resultConsumeIntervals.size(); i++) {
+                    data.add(new MedicineTrackingModel(0, 0, resultConsumeIntervals.get(i), "", MedicineTrackingTypeEnum.NotYet, ""));
+                }
+
+                medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, data);
+                recyclerView.setAdapter(medicineTrackingCardAdapter);
+
+            } catch (ParseException e) {
+                dateTimeStartConsume = "";
+                dateTimeEndConsume = "";
+                throw new RuntimeException(e);
+            }
+        } else {
+            dateTimeStartConsume = "";
+            dateTimeEndConsume = "";
+        }
     }
 
 }

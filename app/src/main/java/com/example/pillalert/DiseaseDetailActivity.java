@@ -58,14 +58,6 @@ public class DiseaseDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewMedicine);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // dummy data
-        List<MedicineModel> data = new ArrayList<>();
-        data.add(new MedicineModel(1,1, "Paracetamol 1", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(2,1, "Paracetamol 2", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(3,1, "Paracetamol 3", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(4,1, "Paracetamol 4", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(5,1, "Paracetamol 5", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-
         medicineCardAdapter = new MedicineCardAdapter(this, medicineTable.getAllMedicine(diseaseId));
         recyclerView.setAdapter(medicineCardAdapter);
 
