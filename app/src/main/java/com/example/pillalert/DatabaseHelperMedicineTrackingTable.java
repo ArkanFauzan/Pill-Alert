@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelperMedicineTrackingTable {
     private DatabaseHelper dbHelper;
@@ -44,18 +48,31 @@ public class DatabaseHelperMedicineTrackingTable {
         return db.insert(TABLE_MEDICINE_TRACKING, null, values);
     }
 
-    public Cursor getAllMedicineTracking() {
+    public List<MedicineTrackingModel> getAllMedicineTracking() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_MEDICINE_TRACKING, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_MEDICINE_TRACKING, null);
+        return mapDataToModel(cursor);
     }
 
-    public Cursor getMedicineTrackingByMedicineId(int medicineId) {
+    public List<MedicineTrackingModel> getMedicineTrackingByMedicineId(int medicineId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.query(TABLE_MEDICINE_TRACKING,
+        Cursor cursor = db.query(TABLE_MEDICINE_TRACKING,
                 null,
                 MEDICINE_TRACKING_MEDICINE_ID + " = ?",
                 new String[]{String.valueOf(medicineId)},
                 null, null, null);
+        return mapDataToModel(cursor);
+    }
+
+    public MedicineTrackingModel getMedicineTrackingById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_MEDICINE_TRACKING,
+                null,
+                MEDICINE_TRACKING_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null, null, null);
+        List<MedicineTrackingModel> data = mapDataToModel(cursor);
+        return ((long) data.size()) > 0 ? data.get(0) : null;
     }
 
     public int updateMedicineTracking(int id, int medicineId, String targetDate, String consumeDate, MedicineTrackingTypeEnum trackingType, String notes) {
@@ -77,5 +94,28 @@ public class DatabaseHelperMedicineTrackingTable {
     public int deleteMedicineTrackingByMedicineId(int medicineId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(TABLE_MEDICINE_TRACKING, MEDICINE_TRACKING_MEDICINE_ID + " = ?", new String[]{String.valueOf(medicineId)});
+    }
+
+    private List<MedicineTrackingModel> mapDataToModel(Cursor data) {
+        List<MedicineTrackingModel> result = new ArrayList<>();
+        try {
+            if (data != null && data.moveToFirst()) {
+                do {
+                    // Extract data from the cursor
+                    int id = data.getInt(data.getColumnIndexOrThrow("id"));
+                    int medicineId = data.getInt(data.getColumnIndexOrThrow("medicine_id"));
+                    String targetDate = data.getString(data.getColumnIndexOrThrow("target_date"));
+                    String consumeDate = data.getString(data.getColumnIndexOrThrow("consume_date"));
+                    MedicineTrackingTypeEnum trackingType = MedicineTrackingTypeEnum.fromValue(data.getInt(data.getColumnIndexOrThrow("tracking_type")));
+                    String notes = data.getString(data.getColumnIndexOrThrow("notes"));
+
+                    result.add(new MedicineTrackingModel(id, medicineId, targetDate, consumeDate, trackingType, notes));
+
+                } while (data.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseError", "Error fetching data: " + e.getMessage());
+        }
+        return result;
     }
 }

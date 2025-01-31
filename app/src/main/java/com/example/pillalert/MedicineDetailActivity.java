@@ -17,70 +17,60 @@ import java.util.List;
 
 public class MedicineDetailActivity extends AppCompatActivity {
 
-    private DatabaseHelperMedicineTable MedicineTable;
-    private TextView nameTextView, descriptionTextView, dateTextView;
-    private RecyclerView recyclerView;
+    private DatabaseHelperMedicineTable medicineTable;
+    private DatabaseHelperMedicineTrackingTable medicineTrackingTable;
+    private RecyclerView recyclerViewMedicine;
+    private RecyclerView recyclerViewMedicineTracking;
     private MedicineCardAdapter medicineCardAdapter;
-    private Button btnaddMedicine;
+    private MedicineTrackingCardAdapter medicineTrackingCardAdapter;
     private ImageView backButton;
+    private int medicineId = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_disease_detail);
-
-        // Initialize views
-        nameTextView = findViewById(R.id.diseaseName);
-        dateTextView = findViewById(R.id.diseaseDate);
-        descriptionTextView = findViewById(R.id.diseaseDescription);
-        btnaddMedicine = findViewById(R.id.addButton);
-        backButton = findViewById(R.id.backButton);
-
-        // Get data from intent
-        int id = getIntent().getIntExtra("id", -1);
-        String name = getIntent().getStringExtra("name");
-        String title = getIntent().getStringExtra("description");
-        String phone = getIntent().getStringExtra("date");
-
-        // Set data to views
-        nameTextView.setText(name);
-        dateTextView.setText(phone);
-        descriptionTextView.setText(title);
+        setContentView(R.layout.activity_medicine_detail);
 
         // Initialize database
-        MedicineTable = new DatabaseHelperMedicineTable(this);
+        medicineTable = new DatabaseHelperMedicineTable(this);
+        medicineTrackingTable = new DatabaseHelperMedicineTrackingTable(this);
 
-        // Show data in card format
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Initialize views
+        recyclerViewMedicine = findViewById(R.id.recyclerViewMedicine);
+        recyclerViewMedicineTracking = findViewById(R.id.recyclerViewMedicineTracking);
+        backButton = findViewById(R.id.backButton);
 
-        // dummy data
-        List<MedicineModel> data = new ArrayList<>();
-        data.add(new MedicineModel(1,1, "Paracetamol 1", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(2,1, "Paracetamol 2", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(3,1, "Paracetamol 3", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(4,1, "Paracetamol 4", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
-        data.add(new MedicineModel(5,1, "Paracetamol 5", "Obat pereda nyeri", MedicineUnitEnum.Capsule, 3, 1, 10, "2025-01-21", "2025-01-23"));
+        recyclerViewMedicine.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewMedicineTracking.setLayoutManager(new LinearLayoutManager(this));
 
-        medicineCardAdapter = new MedicineCardAdapter(this, data);
-        recyclerView.setAdapter(medicineCardAdapter);
+        // Get data from intent
+        medicineId = getIntent().getIntExtra("id", -1);
 
-        // Create Medicine Button Click Event
-        btnaddMedicine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to Create Medicine
-                Intent intent = new Intent(MedicineDetailActivity.this, MedicineAddActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Load data
+        loadData();
 
         // Add Back Button Click Event
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Optional, closes the current activity
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData(); // A method to reload data
+    }
+
+    private void loadData() {
+        // Get detail data
+        List<MedicineModel> medicineModelList = new ArrayList<>();
+        medicineModelList.add(medicineTable.getMedicineById(medicineId));
+
+        // Show detail data in card format
+        medicineCardAdapter = new MedicineCardAdapter(this, medicineModelList);
+        recyclerViewMedicine.setAdapter(medicineCardAdapter);
+
+        // Show medicine tracking data in card format
+        medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, medicineTrackingTable.getMedicineTrackingByMedicineId(medicineId));
+        recyclerViewMedicineTracking.setAdapter(medicineTrackingCardAdapter);
+    }
+
 }

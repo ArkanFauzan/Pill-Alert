@@ -1,5 +1,6 @@
 package com.example.pillalert;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -50,12 +51,12 @@ public class MedicineCardAdapter extends RecyclerView.Adapter<MedicineCardAdapte
 
         // Open detail page on CardView click
         holder.cardView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, MedicineDetailActivity.class);
-//            intent.putExtra("id", card.getId());
-//            intent.putExtra("name", card.getName());
-//            intent.putExtra("description", card.getDescription());
-//            intent.putExtra("consumeSummary", card.getConsumeSummary());
-//            context.startActivity(intent);
+            // called, if this is not detail activity
+            if (context instanceof Activity && ! context.getClass().getSimpleName().equals("MedicineDetailActivity")) {
+                Intent intent = new Intent(context, MedicineDetailActivity.class);
+                intent.putExtra("id", card.getId());
+                context.startActivity(intent);
+            }
         });
 
         holder.editIcon.setOnClickListener(v -> {
@@ -77,6 +78,12 @@ public class MedicineCardAdapter extends RecyclerView.Adapter<MedicineCardAdapte
                         cardList.remove(position); // remove from list
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, cardList.size());
+
+                        // if called from detail activity (only 1 card and delete this data)
+                        if (context instanceof Activity && context.getClass().getSimpleName().equals("MedicineDetailActivity")) {
+                            Activity activity = (Activity) context;
+                            activity.finish(); // Example: Close the activity
+                        }
                     })
                     .setNegativeButton("No", null)
                     .show();

@@ -50,8 +50,8 @@ public class DatabaseHelperDiseaseTable {
     public DiseaseModel getDiseaseById(int id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor result = db.rawQuery("SELECT * FROM " + TABLE_DISEASE + " WHERE  id = " + id, null);
-        List<DiseaseModel> disease = mapDataToModel(result);
-        return ((long) disease.size()) > 0 ? disease.get(0) : null;
+        List<DiseaseModel> data = mapDataToModel(result);
+        return ((long) data.size()) > 0 ? data.get(0) : null;
     }
 
     public int updateDisease(int id, String name, String description, String treatmentDate) {

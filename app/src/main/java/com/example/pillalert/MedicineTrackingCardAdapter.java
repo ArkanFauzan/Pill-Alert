@@ -40,8 +40,8 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
         holder.statusText.setText(card.getTrackingType().getEnglishTranslation());
         // holder.statusIcon.setImageIcon();
 
-        // hide if id == 0 (not exist)
-        if (card.getId() == 0) {
+        // hide if id <= 0 (not exist)
+        if (card.getId() <= 0) {
             holder.editIcon.setVisibility(View.GONE);
             holder.statusText.setVisibility(View.GONE);
             holder.statusIcon.setVisibility(View.GONE);

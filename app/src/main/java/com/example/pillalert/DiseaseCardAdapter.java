@@ -49,9 +49,12 @@ public class DiseaseCardAdapter extends RecyclerView.Adapter<DiseaseCardAdapter.
 
         // Open detail page on CardView click
         holder.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DiseaseDetailActivity.class);
-            intent.putExtra("id", card.getId());
-            context.startActivity(intent);
+            // called, if this is not detail activity
+            if (context instanceof Activity && ! context.getClass().getSimpleName().equals("DiseaseDetailActivity")) {
+                Intent intent = new Intent(context, DiseaseDetailActivity.class);
+                intent.putExtra("id", card.getId());
+                context.startActivity(intent);
+            }
         });
 
         holder.editIcon.setOnClickListener(v -> {
