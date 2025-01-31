@@ -130,7 +130,7 @@ public class MedicineEditActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Navigate Back to Disease Detail Activity
+                // Navigate Back
                 finish();
             } catch (IllegalArgumentException e) {
                 Toast.makeText(MedicineEditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

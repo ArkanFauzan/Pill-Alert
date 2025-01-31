@@ -54,9 +54,7 @@ public class DiseaseAddActivity extends AppCompatActivity {
                 return;
             }
 
-            // Navigate to Dashboard Activity
-            Intent intent = new Intent(DiseaseAddActivity.this, DashboardActivity.class);
-            startActivity(intent);
+            // Navigate back
             finish(); // Close activity
         });
 

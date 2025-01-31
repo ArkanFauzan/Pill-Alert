@@ -1,5 +1,6 @@
 package com.example.pillalert;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -71,6 +72,13 @@ public class DiseaseCardAdapter extends RecyclerView.Adapter<DiseaseCardAdapter.
                         cardList.remove(position); // remove from list
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, cardList.size());
+
+                        // if called from detail activity (only 1 card and delete this data)
+                        if (context instanceof Activity && context.getClass().getSimpleName().equals("DiseaseDetailActivity")) {
+                            Activity activity = (Activity) context;
+                            activity.finish(); // Example: Close the activity
+                        }
+
                     })
                     .setNegativeButton("No", null)
                     .show();

@@ -68,9 +68,7 @@ public class DiseaseEditActivity extends AppCompatActivity {
                 return;
             }
 
-            // Navigate to Dashboard Activity
-            Intent dashboardIntent = new Intent(DiseaseEditActivity.this, DashboardActivity.class);
-            startActivity(dashboardIntent);
+            // Navigate back
             finish(); // Close the activity
         });
 

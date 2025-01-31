@@ -154,7 +154,7 @@ public class MedicineAddActivity extends AppCompatActivity {
                     medicineTrackingTable.addMedicineTracking((int) result, resultConsumeIntervals.get(i), "", MedicineTrackingTypeEnum.NotYet, "");
                 }
 
-                // Navigate Back to Disease Detail Activity
+                // Navigate Back
                 finish();
             } catch (IllegalArgumentException e) {
                 Toast.makeText(MedicineAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

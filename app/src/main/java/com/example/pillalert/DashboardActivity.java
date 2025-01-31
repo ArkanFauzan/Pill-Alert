@@ -27,6 +27,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Initialize views
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Load data
+        loadData();
 
         // Create Disease Button Click Event
         btnAddDisease = findViewById(R.id.btnAddDisease);
@@ -48,8 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void loadData() {
         // Show data in card format
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         diseaseCardAdapter = new DiseaseCardAdapter(this, diseaseTable.getAllDisease());
         recyclerView.setAdapter(diseaseCardAdapter);
     }
