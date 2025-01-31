@@ -24,7 +24,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             android:gravity="left"
-            android:text="Detail data penyakit"
+            android:text="Detail data obat"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -35,11 +35,11 @@
 
     <ScrollView
         android:layout_width="377dp"
-        android:layout_height="153dp"
+        android:layout_height="135dp"
         android:layout_marginBottom="16dp"
         android:scrollbarStyle="outsideInset">
 
-        <!-- Card Disease Detail -->
+        <!-- Card Medicine Detail -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,20 +67,56 @@
                         android:layout_gravity="start"
                         android:padding="0dp">
 
-                        <!-- Diseases Title -->
+                        <!-- Medicines Title -->
                         <TextView
-                            android:id="@+id/diseaseName"
+                            android:id="@+id/medicineName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sakit Radang Tenggorokan"
+                            android:text="Paracetamol"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
+                    <!-- Edit and Delete Icons -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:orientation="horizontal"
+                        android:padding="0dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentEnd="true"
+                            android:padding="0dp">
+
+<!--                            <ImageView-->
+<!--                                android:id="@+id/editIcon"-->
+<!--                                android:layout_width="24dp"-->
+<!--                                android:layout_height="24dp"-->
+<!--                                android:layout_marginEnd="16dp"-->
+<!--                                android:contentDescription="Edit Icon"-->
+<!--                                android:gravity="end"-->
+<!--                                android:src="@drawable/ic_edit" />-->
+
+<!--                            <ImageView-->
+<!--                                android:id="@+id/deleteIcon"-->
+<!--                                android:layout_width="24dp"-->
+<!--                                android:layout_height="24dp"-->
+<!--                                android:contentDescription="Delete Icon"-->
+<!--                                android:gravity="end"-->
+<!--                                android:src="@drawable/ic_delete" />-->
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
-                <!-- Date Information -->
+                <!-- Time Information -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,25 +126,25 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_date"
-                        android:contentDescription="Date Icon" />
+                        android:src="@drawable/ic_clock"
+                        android:contentDescription="Clock Icon" />
 
                     <TextView
-                        android:id="@+id/diseaseDate"
+                        android:id="@+id/medicineConsumeSummary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21 Januari 2025"
+                        android:text="3x sehari @ 1 tablet"
                         android:layout_marginStart="8dp"
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <!-- Diseases Description -->
+                <!-- Medicines Description -->
                 <TextView
-                    android:id="@+id/diseaseDescription"
+                    android:id="@+id/medicineDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan Ceritanya sakit radang tenggorokan "
+                    android:text="Untuk demam dan pereda nyeri"
                     android:textSize="14sp"
                     android:textColor="@android:color/darker_gray" />
 
@@ -129,7 +165,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             android:gravity="left"
-            android:text="Daftar obat yang dikonsumsi"
+            android:text="Jadwal minum obat"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -139,7 +175,7 @@
 
     <ScrollView
         android:layout_width="377dp"
-        android:layout_height="290dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
         android:scrollbarStyle="outsideInset">
 
@@ -151,7 +187,7 @@
             android:orientation="vertical" >
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewMedicine"
+                android:id="@+id/recyclerViewMedicineTracking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -162,23 +198,4 @@
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnAddMedicine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3B82F6"
-            android:text="Tambah Data Obat" />
-
-    </LinearLayout>
-
-    <!-- Illustration -->
-
-    <!-- Message -->
-
-    <!-- Buttons -->
 </LinearLayout>

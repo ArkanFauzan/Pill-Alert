@@ -25,12 +25,8 @@ public class DashboardActivity extends AppCompatActivity {
         // Initialize database
         diseaseTable = new DatabaseHelperDiseaseTable(this);
 
-        // Show data in card format
+        // Initialize views
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        diseaseCardAdapter = new DiseaseCardAdapter(this, diseaseTable.getAllDisease());
-        recyclerView.setAdapter(diseaseCardAdapter);
 
         // Create Disease Button Click Event
         btnAddDisease = findViewById(R.id.btnAddDisease);
@@ -42,5 +38,19 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData(); // A method to reload data
+    }
+
+    private void loadData() {
+        // Show data in card format
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        diseaseCardAdapter = new DiseaseCardAdapter(this, diseaseTable.getAllDisease());
+        recyclerView.setAdapter(diseaseCardAdapter);
     }
 }
