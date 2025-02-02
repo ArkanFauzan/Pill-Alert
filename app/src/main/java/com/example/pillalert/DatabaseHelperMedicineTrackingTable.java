@@ -54,6 +54,15 @@ public class DatabaseHelperMedicineTrackingTable {
         return mapDataToModel(cursor);
     }
 
+    public List<MedicineTrackingModel> getAllMedicineTrackingByTargetDate(String date) { // 2025-01-21 16:00
+        String[] split = date.split("\\s+");
+        date = split.length > 0 ? split[0] : ""; // validate to get only date, not include time
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_MEDICINE_TRACKING + " WHERE " + MEDICINE_TRACKING_TARGET_DATE + " LIKE '"+date+"%' ORDER by " + MEDICINE_TRACKING_TARGET_DATE + " ASC", null);
+        return mapDataToModel(cursor);
+    }
+
     public List<MedicineTrackingModel> getMedicineTrackingByMedicineId(int medicineId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(TABLE_MEDICINE_TRACKING,

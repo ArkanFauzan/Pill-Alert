@@ -1,7 +1,7 @@
 package com.example.pillalert;
 
 public enum MedicineTrackingTypeEnum {
-    NotYet(0, "Belum waktunya"),
+    NotYet(0, "-"),
     OnTime(1, "Tepat waktu"),
     Late(2, "Telat minum"),
     Faster(3, "Lebih cepat minum"),
