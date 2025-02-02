@@ -31,6 +31,7 @@ public class MedicineTrackingEditActivity extends AppCompatActivity {
     private Spinner typeSpinner;
     private Button updateButton, cancelButton;
     private int medicineTrackingId, medicineId;
+    MedicineTrackingModel medicineTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,16 @@ public class MedicineTrackingEditActivity extends AppCompatActivity {
                 }
                 else {
                     // dummy, next: with real calculation by consume date
-                    trackingTypeEnum = MedicineTrackingTypeEnum.OnTime;
+                    int difference = DateTimeHelper.getDifferentMinutes(medicineTracking.getTargetDate(), consumeDate + " " + consumeDateTime);
+                    if (difference > 30) {
+                        trackingTypeEnum = MedicineTrackingTypeEnum.Faster;
+                    }
+                    else if (difference < -30) {
+                        trackingTypeEnum = MedicineTrackingTypeEnum.Late;
+                    }
+                    else {
+                        trackingTypeEnum = MedicineTrackingTypeEnum.OnTime;
+                    }
                 }
 
                 int result = medicineTrackingTable.updateMedicineTracking(
@@ -139,7 +149,7 @@ public class MedicineTrackingEditActivity extends AppCompatActivity {
     }
 
     private void loadMedicineTrackingData(int id) {
-        MedicineTrackingModel medicineTracking = medicineTrackingTable.getMedicineTrackingById(id);
+        medicineTracking = medicineTrackingTable.getMedicineTrackingById(id);
         if (medicineTracking != null) {
             targetDateText.setText(medicineTracking.getTargetDate());
             consumeDateEditText.setText(medicineTracking.getConsumeDateOnlyDate());

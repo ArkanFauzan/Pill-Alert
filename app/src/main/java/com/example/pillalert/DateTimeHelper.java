@@ -9,14 +9,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class DateTimeHelper {
 
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     private Date date;
 
     public DateTimeHelper(String dateTime) throws ParseException {
         date = formatter.parse(dateTime);
+    }
+
+    public static int getDifferentMinutes (String targetDate, String actualDate) {
+
+        try {
+            // Parse target and consume date-time
+            Date target = formatter.parse(targetDate);
+            Date actual = formatter.parse(actualDate);
+
+            // Calculate difference in milliseconds
+            assert target != null;
+            assert actual != null;
+            long diffMillis = target.getTime() - actual.getTime();
+
+            // Convert to minutes
+            long difference = TimeUnit.MILLISECONDS.toMinutes(diffMillis);
+
+            return (int) difference;
+        } catch (ParseException e) {
+            return 0;
+        }
     }
 
     public String getDateTime() {
