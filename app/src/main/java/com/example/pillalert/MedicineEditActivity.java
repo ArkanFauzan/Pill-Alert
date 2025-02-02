@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MedicineEditActivity extends BaseActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
+    private LinearLayout editMedicineScheduleContainer;
     private TextView dosePerConsumeText, amountText;
     private EditText nameEditText, descriptionEditText, dosePerDayEditText, dosePerConsumeEditText, amountEditText, startDateEditText, startTimeEditText, endDateEditText;
     private Spinner unitSpinner;
@@ -53,6 +55,10 @@ public class MedicineEditActivity extends BaseActivity {
         endDateEditText = findViewById(R.id.editTextEndDate);
         updateButton = findViewById(R.id.buttonUpdate);
         cancelButton = findViewById(R.id.buttonCancel);
+
+        // Hide all setting for edit schedule
+        editMedicineScheduleContainer = findViewById(R.id.editMedicineScheduleContainer);
+        editMedicineScheduleContainer.setVisibility(View.GONE);
 
         // Retrieve the medicine ID from the intent
         Intent intent = getIntent();

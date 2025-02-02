@@ -73,100 +73,108 @@
                 android:minLines="3"
                 android:layout_marginBottom="8dp" />
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/editMedicineScheduleContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Satuan Obat"
-                android:layout_marginBottom="4dp" />
-            <Spinner
-                android:id="@+id/spinnerUnit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dosis per Hari"
-                android:layout_marginBottom="4dp" />
-            <EditText
-                android:id="@+id/editTextDosePerDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Masukkan dosis per hari"
-                android:inputType="number"
-                android:layout_marginBottom="8dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Satuan Obat"
+                    android:layout_marginBottom="4dp" />
+                <Spinner
+                    android:id="@+id/spinnerUnit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:id="@+id/textDosePerConsume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dosis per Konsumsi"
-                android:layout_marginBottom="4dp" />
-            <EditText
-                android:id="@+id/editTextDosePerConsume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Masukkan dosis per konsumsi"
-                android:inputType="number"
-                android:layout_marginBottom="8dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dosis per Hari"
+                    android:layout_marginBottom="4dp" />
+                <EditText
+                    android:id="@+id/editTextDosePerDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Masukkan dosis per hari"
+                    android:inputType="number"
+                    android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:id="@+id/textAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Jumlah Obat yang Diberikan"
-                android:layout_marginBottom="4dp" />
-            <EditText
-                android:id="@+id/editTextAmount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Masukkan jumlah obat"
-                android:inputType="number"
-                android:layout_marginBottom="8dp" />
+                <TextView
+                    android:id="@+id/textDosePerConsume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dosis per Konsumsi"
+                    android:layout_marginBottom="4dp" />
+                <EditText
+                    android:id="@+id/editTextDosePerConsume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Masukkan dosis per konsumsi"
+                    android:inputType="number"
+                    android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tanggal Mulai"
-                android:layout_marginBottom="4dp" />
-            <EditText
-                android:id="@+id/editTextStartDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Pilih tanggal mulai"
-                android:focusable="false"
-                android:clickable="true"
-                android:layout_marginBottom="8dp" />
+                <TextView
+                    android:id="@+id/textAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jumlah Obat yang Diberikan"
+                    android:layout_marginBottom="4dp" />
+                <EditText
+                    android:id="@+id/editTextAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Masukkan jumlah obat"
+                    android:inputType="number"
+                    android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Waktu Mulai"
-                android:layout_marginBottom="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Mulai"
+                    android:layout_marginBottom="4dp" />
+                <EditText
+                    android:id="@+id/editTextStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pilih tanggal mulai"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/editTextStartTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Pilih waktu mulai"
-                android:focusable="false"
-                android:clickable="true"
-                android:layout_marginBottom="8dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu Mulai"
+                    android:layout_marginBottom="4dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tanggal Selesai"
-                android:layout_marginBottom="4dp" />
-            <EditText
-                android:id="@+id/editTextEndDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Pilih tanggal selesai"
-                android:focusable="false"
-                android:clickable="true"
-                android:layout_marginBottom="16dp" />
+                <EditText
+                    android:id="@+id/editTextStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pilih waktu mulai"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Selesai"
+                    android:layout_marginBottom="4dp" />
+                <EditText
+                    android:id="@+id/editTextEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pilih tanggal selesai"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/buttonUpdate"
