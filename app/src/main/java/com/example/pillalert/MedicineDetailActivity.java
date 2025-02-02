@@ -69,7 +69,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
         recyclerViewMedicine.setAdapter(medicineCardAdapter);
 
         // Show medicine tracking data in card format
-        medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, medicineTrackingTable.getMedicineTrackingByMedicineId(medicineId));
+        medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, medicineTrackingTable.getMedicineTrackingByMedicineId(medicineId), false);
         recyclerViewMedicineTracking.setAdapter(medicineTrackingCardAdapter);
     }
 

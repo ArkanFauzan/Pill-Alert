@@ -19,10 +19,12 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
 
     private Context context;
     private List<MedicineTrackingModel> cardList;
+    private Boolean showMedicineName;
 
-    public MedicineTrackingCardAdapter(Context context, List<MedicineTrackingModel> cardList) {
+    public MedicineTrackingCardAdapter(Context context, List<MedicineTrackingModel> cardList, Boolean showMedicineName) {
         this.context = context;
         this.cardList = cardList;
+        this.showMedicineName = showMedicineName;
     }
 
     @NonNull
@@ -48,6 +50,15 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
             holder.editIcon.setVisibility(View.GONE);
             holder.statusText.setVisibility(View.GONE);
             holder.statusIcon.setVisibility(View.GONE);
+        }
+
+        if (showMedicineName) {
+            // set medicine name
+            holder.medicineNameText.setText(card.getMedicine(context).getName());
+        }
+        else {
+            // hide
+            holder.medicineNameText.setVisibility(View.GONE);
         }
 
         if (card.getConsumeDate().trim().isEmpty()) {
@@ -77,7 +88,7 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
     }
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView nameText, statusText, consumeDateText;
+        TextView nameText, statusText, consumeDateText, medicineNameText;
         ImageView statusIcon, editIcon;
         LinearLayout consumeDateContainer;
         CardView cardView;
@@ -90,6 +101,7 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
             editIcon = itemView.findViewById(R.id.editIcon);
             consumeDateContainer = itemView.findViewById(R.id.consumeDateContainer);
             consumeDateText = itemView.findViewById(R.id.consumeDateText);
+            medicineNameText = itemView.findViewById(R.id.medicineName);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }

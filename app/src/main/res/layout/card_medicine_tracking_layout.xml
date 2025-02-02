@@ -37,6 +37,14 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <!-- Medicine Trackings Title -->
+                <TextView
+                    android:id="@+id/medicineName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paracetamol"
+                    android:textSize="18sp"/>
+
             </LinearLayout>
 
             <!-- Edit Icons -->

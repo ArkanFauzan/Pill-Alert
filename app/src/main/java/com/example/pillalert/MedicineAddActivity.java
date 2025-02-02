@@ -282,7 +282,7 @@ public class MedicineAddActivity extends AppCompatActivity {
                     data.add(new MedicineTrackingModel(0, 0, resultConsumeIntervals.get(i), "", MedicineTrackingTypeEnum.NotYet, ""));
                 }
 
-                medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, data);
+                medicineTrackingCardAdapter = new MedicineTrackingCardAdapter(this, data, false);
                 recyclerView.setAdapter(medicineTrackingCardAdapter);
 
             } catch (ParseException e) {

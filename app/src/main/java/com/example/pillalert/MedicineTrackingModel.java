@@ -1,5 +1,7 @@
 package com.example.pillalert;
 
+import android.content.Context;
+
 public class MedicineTrackingModel {
     private int id;
     private int medicineId;
@@ -23,6 +25,11 @@ public class MedicineTrackingModel {
 
     public int getMedicineId() {
         return medicineId;
+    }
+
+    public MedicineModel getMedicine(Context context) {
+        DatabaseHelperMedicineTable medicineTable = new DatabaseHelperMedicineTable(context);
+        return medicineTable.getMedicineById(medicineId);
     }
 
     public String getTargetDate() {
