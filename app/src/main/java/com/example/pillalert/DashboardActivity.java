@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private DatabaseHelperDiseaseTable diseaseTable;
     private RecyclerView recyclerView;
@@ -21,6 +21,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        setupBottomNavigation(R.id.menu_manage_schedule);
 
         // Initialize database
         diseaseTable = new DatabaseHelperDiseaseTable(this);

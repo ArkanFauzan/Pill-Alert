@@ -86,4 +86,7 @@
         android:backgroundTint="#91959c"
         android:text="Cancel" />
 
+    <!-- Button Navigation -->
+    <include layout="@layout/component_button_navigation" />
+
 </LinearLayout>

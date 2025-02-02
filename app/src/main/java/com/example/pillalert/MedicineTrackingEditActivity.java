@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MedicineTrackingEditActivity extends AppCompatActivity {
+public class MedicineTrackingEditActivity extends BaseActivity {
 
     private DatabaseHelperMedicineTrackingTable medicineTrackingTable;
     private TextView targetDateText;
@@ -37,6 +37,7 @@ public class MedicineTrackingEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_tracking_edit);
+        setupBottomNavigation(R.id.menu_manage_schedule);
 
         // Initialize database
         medicineTrackingTable = new DatabaseHelperMedicineTrackingTable(this);

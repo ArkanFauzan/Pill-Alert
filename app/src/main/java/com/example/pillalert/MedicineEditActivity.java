@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MedicineEditActivity extends AppCompatActivity {
+public class MedicineEditActivity extends BaseActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
     private TextView dosePerConsumeText, amountText;
@@ -34,6 +34,7 @@ public class MedicineEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_edit);
+        setupBottomNavigation(R.id.menu_manage_schedule);
 
         // Initialize database
         medicineTable = new DatabaseHelperMedicineTable(this);

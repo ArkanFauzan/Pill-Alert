@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-public class DiseaseAddActivity extends AppCompatActivity {
+public class DiseaseAddActivity extends BaseActivity {
 
     private DatabaseHelperDiseaseTable diseaseTable;
     private EditText nameEditText, descriptionEditText;
@@ -23,6 +23,7 @@ public class DiseaseAddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disease_add);
+        setupBottomNavigation(R.id.menu_manage_schedule);
 
         // Initialize database
         diseaseTable = new DatabaseHelperDiseaseTable(this);

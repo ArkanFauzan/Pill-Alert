@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_schedule_summary"
+        android:icon="@drawable/ic_schedule"
+        android:visible="true"
+        android:enabled="true"
+        android:title="Schedule" />
+
+    <item
+        android:id="@+id/menu_manage_schedule"
+        android:icon="@drawable/ic_manage"
+        android:visible="true"
+        android:enabled="true"
+        android:title="Manage" />
+</menu>

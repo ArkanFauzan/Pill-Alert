@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineDetailActivity extends AppCompatActivity {
+public class MedicineDetailActivity extends BaseActivity {
 
     private DatabaseHelperMedicineTable medicineTable;
     private DatabaseHelperMedicineTrackingTable medicineTrackingTable;
@@ -30,6 +30,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
+        setupBottomNavigation(R.id.menu_manage_schedule);
 
         // Initialize database
         medicineTable = new DatabaseHelperMedicineTable(this);
