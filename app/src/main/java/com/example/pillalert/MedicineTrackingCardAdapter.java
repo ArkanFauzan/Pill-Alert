@@ -1,10 +1,12 @@
 package com.example.pillalert;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,12 +41,17 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
         holder.nameText.setText(card.getTargetDate());
         holder.statusText.setText(card.getTrackingType().getEnglishTranslation());
         // holder.statusIcon.setImageIcon();
+        holder.consumeDateText.setText(card.getConsumeDate());
 
-        // hide if id <= 0 (not exist)
+        // hide if id <= 0 (not exist, only for preview)
         if (card.getId() <= 0) {
             holder.editIcon.setVisibility(View.GONE);
             holder.statusText.setVisibility(View.GONE);
             holder.statusIcon.setVisibility(View.GONE);
+        }
+
+        if (card.getConsumeDate().trim().isEmpty()) {
+            holder.consumeDateContainer.setVisibility(View.GONE);
         }
 
         holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
@@ -56,10 +63,10 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
 
         holder.editIcon.setOnClickListener(v -> {
             // Handle edit click
-//            Intent intent = new Intent(context, MedicineEditActivity.class);
-//            intent.putExtra("id", card.getId()); // parsing id to edit activity
-//            intent.putExtra("diseaseId", card.getDiseaseId()); // parsing id to edit activity
-//            context.startActivity(intent);
+            Intent intent = new Intent(context, MedicineTrackingEditActivity.class);
+            intent.putExtra("id", card.getId()); // parsing id to edit activity
+            intent.putExtra("medicineId", card.getMedicineId()); // parsing id to edit activity
+            context.startActivity(intent);
         });
 
     }
@@ -70,8 +77,9 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
     }
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
-        TextView nameText, statusText;
+        TextView nameText, statusText, consumeDateText;
         ImageView statusIcon, editIcon;
+        LinearLayout consumeDateContainer;
         CardView cardView;
 
         public CardViewHolder(@NonNull View itemView) {
@@ -80,6 +88,8 @@ public class MedicineTrackingCardAdapter extends RecyclerView.Adapter<MedicineTr
             statusText = itemView.findViewById(R.id.medicineTrackingStatus);
             statusIcon = itemView.findViewById(R.id.medicineTrackingStatusIcon);
             editIcon = itemView.findViewById(R.id.editIcon);
+            consumeDateContainer = itemView.findViewById(R.id.consumeDateContainer);
+            consumeDateText = itemView.findViewById(R.id.consumeDateText);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }

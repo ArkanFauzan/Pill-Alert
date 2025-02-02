@@ -75,11 +75,11 @@ public class DatabaseHelperMedicineTrackingTable {
         return ((long) data.size()) > 0 ? data.get(0) : null;
     }
 
-    public int updateMedicineTracking(int id, int medicineId, String targetDate, String consumeDate, MedicineTrackingTypeEnum trackingType, String notes) {
+    public int updateMedicineTracking(int id, int medicineId, String consumeDate, MedicineTrackingTypeEnum trackingType, String notes) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MEDICINE_TRACKING_MEDICINE_ID, medicineId);
-        values.put(MEDICINE_TRACKING_TARGET_DATE, targetDate);
+        // values.put(MEDICINE_TRACKING_TARGET_DATE, targetDate);
         values.put(MEDICINE_TRACKING_CONSUME_DATE, consumeDate);
         values.put(MEDICINE_TRACKING_TYPE, trackingType.getValue());
         values.put(MEDICINE_TRACKING_NOTES, notes);
